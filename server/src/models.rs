@@ -40,6 +40,12 @@ pub struct ModalityAspect {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct ModalityAspectWithLevel {
+    pub aspect: ModalityAspect,
+    pub level: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Substant {
     pub id: String,
     pub factoid: String,
@@ -72,6 +78,22 @@ pub struct GenerationResult {
     pub message: String,
     pub insight: Option<String>,
     pub profile_snippet: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Utterance {
+    pub id: String,
+    pub character_id: String,
+    pub substant_id: String,
+    pub utterance: String,
+    pub insight: Option<String>,
+    pub constructed_from: Option<String>,
+    pub used_aspect: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct UtterancesWrapper {
+    pub utterances: Vec<Utterance>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
