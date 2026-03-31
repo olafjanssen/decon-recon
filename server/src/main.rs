@@ -29,20 +29,17 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Generate an utterance for a character
-    Generate {
+    /// Construct a message with a specific aspect for a character
+    Construct {
         /// Campaign ID
         campaign_id: String,
         /// Character ID
         character_id: String,
         /// Message to process
         message: String,
-        /// Action: respond, construct, or deconstruct
-        #[arg(default_value = "respond")]
-        action: String,
-        /// Submodality ID (for construct/deconstruct)
+        /// Aspect ID to add
         #[arg(short, long)]
-        submodality: Option<String>,
+        aspect: String,
     },
 
     /// List available campaigns
@@ -103,12 +100,11 @@ Characters:"
                 Err(e) => eprintln!("Error loading campaign: {}", e),
             }
         }
-        Commands::Generate {
+        Commands::Construct {
             campaign_id,
             character_id,
             message,
-            action,
-            submodality,
+            aspect,
         } => {
             if !campaign_exists(campaign_id, data_path) {
                 eprintln!("Campaign {} not found", campaign_id);
@@ -131,68 +127,21 @@ Characters:"
                 }
             };
 
-            match action.as_str() {
-                "respond" => {
-                    match generator
-                        .generate_response(&campaign_data, character_id, message)
-                        .await
-                    {
-                        Ok(response) => {
-                            println!("Generated response:");
-                            println!("{}", response);
-                        }
-                        Err(e) => eprintln!("Error generating response: {}", e),
+            match generator
+                .generate_construction(&campaign_data, character_id, &aspect, message)
+                .await
+            {
+                Ok(result) => {
+                    println!("Generated construction:");
+                    println!("Message: {}", result.message);
+                    if let Some(insight) = result.insight {
+                        println!("Insight: {}", insight);
+                    }
+                    if let Some(profile_snippet) = result.profile_snippet {
+                        println!("Profile snippet: {}", profile_snippet);
                     }
                 }
-                "construct" => {
-                    if let Some(submodality_id) = submodality {
-                        match generator
-                            .generate_construction(
-                                &campaign_data,
-                                character_id,
-                                submodality_id,
-                                message,
-                            )
-                            .await
-                        {
-                            Ok(result) => {
-                                println!("Generated construction:");
-                                println!("Message: {}", result.message);
-                                if let Some(insight) = result.insight {
-                                    println!("Insight: {}", insight);
-                                }
-                            }
-                            Err(e) => eprintln!("Error generating construction: {}", e),
-                        }
-                    } else {
-                        eprintln!("Submodality ID required for construct action");
-                    }
-                }
-                "deconstruct" => {
-                    if let Some(submodality_id) = submodality {
-                        match generator
-                            .generate_deconstruction(
-                                &campaign_data,
-                                character_id,
-                                submodality_id,
-                                message,
-                            )
-                            .await
-                        {
-                            Ok(result) => {
-                                println!("Generated deconstruction:");
-                                println!("Message: {}", result.message);
-                                if let Some(insight) = result.insight {
-                                    println!("Insight: {}", insight);
-                                }
-                            }
-                            Err(e) => eprintln!("Error generating deconstruction: {}", e),
-                        }
-                    } else {
-                        eprintln!("Submodality ID required for deconstruct action");
-                    }
-                }
-                _ => eprintln!("Invalid action: {}", action),
+                Err(e) => eprintln!("Error generating construction: {}", e),
             }
         }
     }

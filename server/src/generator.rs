@@ -13,83 +13,32 @@ impl UtteranceGenerator {
         Ok(Self { llm_service })
     }
 
-    pub async fn generate_response(
-        &self,
-        campaign_data: &CampaignData,
-        character_id: &str,
-        message: &str,
-    ) -> Result<String, AppError> {
-        let character = campaign_data
-            .find_character(character_id)
-            .ok_or_else(|| AppError::CharacterNotFound(character_id.to_string()))?;
-
-        let prompt = prompts::get_dialogue_response_prompt(&character.description, "", "", message);
-
-        self.llm_service.generate_text(&prompt).await
-    }
-
     pub async fn generate_construction(
         &self,
         campaign_data: &CampaignData,
         character_id: &str,
-        submodality_id: &str,
+        aspect_id: &str,
         message: &str,
     ) -> Result<GenerationResult, AppError> {
         let character = campaign_data
             .find_character(character_id)
             .ok_or_else(|| AppError::CharacterNotFound(character_id.to_string()))?;
 
-        let modality_aspect = campaign_data
-            .find_modality_aspect(submodality_id)
-            .ok_or_else(|| AppError::SubmodalityNotFound(submodality_id.to_string()))?;
+        let aspect = campaign_data
+            .find_modality_aspect(aspect_id)
+            .ok_or_else(|| AppError::SubmodalityNotFound(aspect_id.to_string()))?;
 
-        let _modality_context = campaign_data.get_modality_context(submodality_id);
+        let modality_context = campaign_data.get_modality_context(aspect_id);
 
-        let prompt = format!(
-            "Construct message for {} using submodality {}: {}",
-            character.name, modality_aspect.name, message
+        let prompt = prompts::get_construct_translation_prompt(
+            &character.name,
+            &character.description,
+            &aspect.name,
+            &aspect.description,
+            &modality_context,
+            message,
         );
 
         self.llm_service.generate_structured(&prompt).await
-    }
-
-    pub async fn generate_deconstruction(
-        &self,
-        campaign_data: &CampaignData,
-        character_id: &str,
-        submodality_id: &str,
-        message: &str,
-    ) -> Result<GenerationResult, AppError> {
-        let character = campaign_data
-            .find_character(character_id)
-            .ok_or_else(|| AppError::CharacterNotFound(character_id.to_string()))?;
-
-        let modality_aspect = campaign_data
-            .find_modality_aspect(submodality_id)
-            .ok_or_else(|| AppError::SubmodalityNotFound(submodality_id.to_string()))?;
-
-        let _modality_context = campaign_data.get_modality_context(submodality_id);
-
-        let prompt = format!(
-            "Deconstruct message for {} removing submodality {}: {}",
-            character.name, modality_aspect.name, message
-        );
-
-        self.llm_service.generate_structured(&prompt).await
-    }
-
-    pub async fn generate_response_mock(
-        &self,
-        campaign_data: &CampaignData,
-        character_id: &str,
-        message: &str,
-    ) -> Result<String, AppError> {
-        let character = campaign_data
-            .find_character(character_id)
-            .ok_or_else(|| AppError::CharacterNotFound(character_id.to_string()))?;
-
-        let prompt = prompts::get_dialogue_response_prompt(&character.description, "", "", message);
-
-        self.llm_service.generate_text_mock(&prompt).await
     }
 }

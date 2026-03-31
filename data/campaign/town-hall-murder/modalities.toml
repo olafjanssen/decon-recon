@@ -12,7 +12,7 @@ full_description = "**Core Meaning:** The fundamental, context-independent meani
 id = "core:facts"
 name = "Facts"
 layman_name = "Just the Facts"
-description = "The fundamental, context-independent meaning of the text. This is the most abstract representation of an idea or fact, stripped of any emotional, cultural, or stylistic influences."
+description = "The fundamental, context-independent meaning of the text in the form of a grammatically correct sentence. This is the most abstract representation of an idea or fact, stripped of any emotional, cultural, or stylistic influences."
 icon = "💡"
 
 [[layers]]
