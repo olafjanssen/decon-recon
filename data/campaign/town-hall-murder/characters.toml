@@ -1,0 +1,49 @@
+[[characters]]
+id = "elias"
+name = "Elias"
+location = "Old Mill"
+description = """
+A 60-year-old recluse and the town historian. Elias has spent decades preserving the Old Mill, a crumbling relic of the town's past. The mayor's land deal would have demolished the mill to make way for a new development. Elias is paranoid, secretive, and speaks in riddles and historical metaphors. His knowledge of the town's past makes him both respected and feared.
+"""
+preferential_modalities = ["core:facts", "emotional:paranoia", "referential:historical", "coherence:descriptive", "cultural:traditional", "intertextual:historical", "ideological:conservative", "relational:formal", "sociolinguistic:academic", "pragmatic:warnings"]
+secret = "A ledger showing the mayor forging Elias's signature on the mill's deed, proving the mayor planned to steal his land."
+
+[[characters]]
+id = "rosa"
+name = "Rosa"
+location = "Saloon"
+description = """
+A 35-year-old saloon owner and the mayor's secret lover. Rosa is fiery, dramatic, and fiercely protective of her business. She stands to lose everything if the land deal goes through, as her saloon sits on prime real estate. She is quick to deflect blame and uses her charm to manipulate conversations.
+"""
+preferential_modalities = ["core:facts", "emotional:defensiveness", "referential:city", "coherence:narrative", "cultural:latina", "intertextual:literary", "ideological:liberal", "relational:intimate", "sociolinguistic:mercantile", "pragmatic:offer"]
+secret = "A love letter from the mayor, promising her a cut of the land deal's profits if she kept their affair quiet."
+
+[[characters]]
+id = "father-mark"
+name = "Father Mark"
+location = "Church"
+description = """
+A 50-year-old priest and the mayor's confessor. Father Mark is calm, measured, and speaks in parables, but he carries a heavy burden of guilt. He knew the mayor was embezzling church funds to finance the land deal and struggled with whether to expose him. His faith and moral compass are at odds with his desire to protect the town.
+"""
+preferential_modalities = ["core:facts", "emotional:guilt", "referential:historical", "coherence:expository", "cultural:religious", "intertextual:biblical", "ideological:humanism", "relational:instructional", "sociolinguistic:academic", "pragmatic:moralizing"]
+secret = "A confession note from the mayor, detailing his crimes, including embezzlement and bribery."
+
+[[characters]]
+id = "harlan"
+name = "Harlan"
+location = "Blacksmith"
+description = """
+A 45-year-old blacksmith and the mayor's longtime rival. Harlan's family land is part of the controversial deal, and he has been vocal about his opposition. He is blunt, physically imposing, and prone to outbursts of rage. His forge is his sanctuary, and he trusts actions over words.
+"""
+preferential_modalities = ["core:facts", "emotional:rage", "referential:economic", "coherence:argumentative", "cultural:western", "intertextual:artisanal", "ideological:anarchism", "relational:adversarial", "sociolinguistic:redneck", "pragmatic:accusations"]
+secret = "A bloodstained apron hidden in his forge, suggesting he was involved in the mayor's death."
+
+[[characters]]
+id = "clara"
+name = "Clara"
+location = "Schoolhouse"
+description = """
+A 28-year-old schoolteacher and the mayor's niece. Clara is idealistic, organized, and deeply attached to the town's future. She believed she would inherit the mayor's estate, but a draft of his new will cuts her out entirely. She communicates with precision and nostalgia, often referencing the town's traditions.
+"""
+preferential_modalities = ["core:facts", "emotional:nostalgia", "referential:legal", "coherence:lists", "cultural:traditional", "intertextual:literary", "ideological:liberal", "relational:instructional", "sociolinguistic:academic", "pragmatic:suggestion"]
+secret = "A draft of the mayor's new will, which disinherits her and leaves everything to an unknown beneficiary."

@@ -1,0 +1,29 @@
+id = "town_hall_murder"
+title = "The Town Hall Murder"
+hub_location = "TownHall"
+description = """
+A small-town mayor is found dead in the town hall meeting room, stabbed with a ceremonial dagger during a heated debate over a controversial land deal. Four key figures—each with a motive, an alibi, and a hidden location tied to their secrets—were present at the time of the murder. As the traveling linguistic mediator, you must navigate the **hub (Town Hall)** and each character’s personal space to **deconstruct their alibis**, **uncover the truth**, and **mediate the conflict** before the town erupts into chaos.
+
+The mayor’s death has left the town divided, and tensions are rising. The land deal he championed would displace half the town, and his murder has exposed deep-seated grievances, secrets, and betrayals. Your task is to **reconstruct the events of that night** by stripping away the layers of deception, cultural nuances, and emotional manipulation to reveal the killer—and perhaps broker a fragile peace.
+"""
+introduction = """
+The body of Mayor Thomas Holloway lies on the floor of the **Town Hall meeting room**, a ceremonial dagger embedded in his chest. The door was locked from the inside, and a town map with four locations marked is pinned to the wall. The mayor was in the midst of pushing through a **controversial land deal** that would displace half the town, and each of the four key figures present had a reason to want him dead:
+
+- **Elias**, the paranoid historian, whose mill was slated for demolition.
+- **Rosa**, the saloon owner and the mayor’s secret lover, who stood to lose her business.
+- **Father Mark**, the priest who knew the mayor was embezzling church funds.
+- **Harlan**, the blacksmith whose family land was part of the deal—and whose apron is stained with blood.
+
+The town is on the brink of collapse. The police are on their way, but the people demand answers **now**. As the mediator, you must **travel between the Town Hall and each character’s location**, deconstruct their stories, and piece together the truth before the town tears itself apart.
+"""
+
+resolution = """
+As you piece together the substants and deconstruct the characters’ alibis, a clear picture emerges:
+
+- **Rosa’s secret relationship** with the mayor (S7) gave her a motive—she stood to lose everything if the land deal went through.
+- **The bloodstained apron** (S31) in Harlan’s forge initially points to him, but further investigation reveals it’s **not the mayor’s blood**.
+- **Father Mark’s knowledge of the embezzlement** (S11) and his role as the mayor’s confessor make him a suspect, but his alibi holds.
+- **Elias’s forged signature** (S6) on the mill’s deed proves the mayor’s corruption, but Elias was **guarding his mill** during the murder.
+
+The truth? **Rosa killed the mayor in a fit of rage** after discovering he planned to cut her out of the land deal profits. She **wiped the dagger clean**, **locked the door from the inside**, and **planted the dagger** to frame Elias. The missing pocket watch (S25) was taken as a trophy—but she left behind the **love letter** (S7) hidden in her saloon, and the **marked map** (S5) in the Town Hall reveals her opportunity.
+"""

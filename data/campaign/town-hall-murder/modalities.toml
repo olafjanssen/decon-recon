@@ -1,0 +1,345 @@
+# Layers and Aspects Configuration
+# This file defines the hierarchical structure of communication layers and their specific aspects
+
+[[layers]]
+level = 1
+id = "core"
+name = "Core Meaning"
+layman_name = "Just the Facts"
+full_description = "**Core Meaning:** The fundamental, context-independent meaning of the text. This is the most abstract representation of an idea or fact, stripped of any emotional, cultural, or stylistic influences."
+
+[[layers.aspects]]
+id = "core:facts"
+name = "Facts"
+layman_name = "Just the Facts"
+description = "The fundamental, context-independent meaning of the text. This is the most abstract representation of an idea or fact, stripped of any emotional, cultural, or stylistic influences."
+icon = "💡"
+
+[[layers]]
+level = 2
+id = "pragmatic"
+name = "Pragmatic Context"
+layman_name = "Getting Things Done"
+full_description = "**Pragmatic Context:** The intended use of language in situational contexts, including speech acts (e.g., requests, offers, commands) and implicatures, which require an understanding of the speaker's intentions and the conversational context."
+
+[[layers.aspects]]
+id = "pragmatic:warnings"
+name = "Warnings"
+layman_name = "Watch Out"
+description = "A speech act used to alert others to potential danger, risk, or negative consequences of an action."
+icon = "⚠️"
+
+[[layers.aspects]]
+id = "pragmatic:offer"
+name = "Offer"
+layman_name = "Let Me Help"
+description = "A speech act used to offer something or a service to others."
+icon = "🤝"
+
+[[layers.aspects]]
+id = "pragmatic:suggestion"
+name = "Suggestion"
+layman_name = "Just a Thought"
+description = "A speech act used to propose an idea or course of action in a non-imposing manner."
+icon = "💡"
+
+[[layers.aspects]]
+id = "pragmatic:accusations"
+name = "Accusations"
+layman_name = "Pointing Fingers"
+description = "A speech act used to accuse others of wrongdoing or responsibility."
+icon = "👉"
+
+[[layers.aspects]]
+id = "pragmatic:moralizing"
+name = "Moralizing"
+layman_name = "Preaching"
+description = "A speech act used to express moral judgments or lessons."
+icon = "🙏"
+
+[[layers]]
+level = 3
+id = "referential"
+name = "Referential Context"
+layman_name = "Real World Places"
+full_description = "**Referential Context:** The specific entities, locations, times, and real-world references mentioned in the text. This layer anchors abstract meanings to concrete instances."
+
+[[layers.aspects]]
+id = "referential:historical"
+name = "Historical"
+layman_name = "Back in Time"
+description = "References to specific historical periods, events, or figures that anchor the text in a particular time in the past."
+icon = "⏳"
+
+[[layers.aspects]]
+id = "referential:city"
+name = "City"
+layman_name = "Bright Lights Big City"
+description = "References to urban or metropolitan settings, including specific locations such as cafes, bars, libraries, theatres, administrative buildings, parks, apartment buildings."
+icon = "🌆"
+
+[[layers.aspects]]
+id = "referential:legal"
+name = "Legal"
+layman_name = "Law and Order"
+description = "References to legal concepts, documents, procedures, and terminology."
+icon = "⚖️"
+
+[[layers.aspects]]
+id = "referential:economic"
+name = "Economic"
+layman_name = "Money Matters"
+description = "References to economic concepts, transactions, and financial matters."
+icon = "💰"
+
+[[layers]]
+level = 4
+id = "coherence"
+name = "Discourse Coherence"
+layman_name = "Making Sense"
+full_description = "**Discourse Coherence:** The logical flow and connectivity of ideas across sentences and paragraphs, ensuring that the text forms a coherent whole rather than disconnected fragments."
+
+[[layers.aspects]]
+id = "coherence:descriptive"
+name = "Descriptive"
+layman_name = "Paint a Picture"
+description = "A form of discourse that focuses on depicting scenes, objects, or experiences in detail. This creates coherent text through vivid portrayal of characteristics and features."
+icon = "🎨"
+
+[[layers.aspects]]
+id = "coherence:narrative"
+name = "Narrative"
+layman_name = "Once Upon a Time"
+description = "A form of discourse that focuses on telling a story or recounting events in an engaging sequence. It uses storytelling techniques to create a coherent and engaging narrative."
+icon = "📚"
+
+[[layers.aspects]]
+id = "coherence:expository"
+name = "Expository"
+layman_name = "Let Me Explain"
+description = "A form of discourse that focuses on explaining or elucidating a concept, idea, or topic. It uses expository techniques to create a coherent, transparent, and informative text."
+icon = "📝"
+
+[[layers.aspects]]
+id = "coherence:argumentative"
+name = "Argumentative"
+layman_name = "Making My Case"
+description = "A form of discourse that presents a claim and supporting evidence to persuade the audience of a particular viewpoint or conclusion."
+icon = "⚖️"
+
+[[layers.aspects]]
+id = "coherence:lists"
+name = "Lists"
+layman_name = "Check It Off"
+description = "A form of discourse that presents information in a structured list format, creating coherence through organized enumeration."
+icon = "📋"
+
+[[layers]]
+level = 5
+id = "emotional"
+name = "Sentiment and Emotional Tone"
+layman_name = "Feelings Matter"
+full_description = "**Sentiment and Emotional Tone:** The emotional layer of the text, which includes sentiments (positive, negative, neutral) and more specific emotional states (joy, anger, sadness)."
+
+[[layers.aspects]]
+id = "emotional:paranoia"
+name = "Paranoia"
+layman_name = "Trust No One"
+description = "An intense emotional state of suspicion, distrust, and fear of persecution or conspiracy."
+icon = "😰"
+
+[[layers.aspects]]
+id = "emotional:defensiveness"
+name = "Defensiveness"
+layman_name = "On Guard"
+description = "An emotional state of being protective and resistant to criticism or perceived threats."
+icon = "🛡️"
+
+[[layers.aspects]]
+id = "emotional:guilt"
+name = "Guilt"
+layman_name = "Heavy Heart"
+description = "An emotional state of remorse or responsibility for perceived wrongdoing."
+icon = "😔"
+
+[[layers.aspects]]
+id = "emotional:rage"
+name = "Rage"
+layman_name = "Seeing Red"
+description = "An intense emotional state of fury and violent anger."
+icon = "😠"
+
+[[layers.aspects]]
+id = "emotional:nostalgia"
+name = "Nostalgia"
+layman_name = "Good Old Days"
+description = "A sentimental longing for the past, often with positive emotional overtones."
+icon = "😊"
+
+[[layers]]
+level = 6
+id = "cultural"
+name = "Cultural References and Symbolism"
+layman_name = "Cultural Touchstones"
+full_description = "**Cultural References and Symbolism:** Implicit and explicit references that require cultural knowledge to decode, including idioms, proverbs, cultural symbols, and allusions."
+
+[[layers.aspects]]
+id = "cultural:traditional"
+name = "Traditional"
+layman_name = "Old Ways"
+description = "References to established customs, folklore, or historical cultural practices that have been passed down through generations."
+icon = "📜"
+
+[[layers.aspects]]
+id = "cultural:latina"
+name = "Latina"
+layman_name = "Cultural Heritage"
+description = "References to Latin American cultural elements, traditions, and values."
+icon = "🌺"
+
+[[layers.aspects]]
+id = "cultural:western"
+name = "Western"
+layman_name = "Cowboy Culture"
+description = "References to symbols, traditions, and values associated with Western culture, particularly American frontier heritage and European influence."
+icon = "🤠"
+
+[[layers.aspects]]
+id = "cultural:religious"
+name = "Religious"
+layman_name = "Faith and Belief"
+description = "References to religious symbols, rituals, concepts, or figures that require specific faith-based cultural knowledge to fully understand."
+icon = "🙏"
+
+[[layers]]
+level = 7
+id = "intertextual"
+name = "Intertextuality"
+layman_name = "Connecting Stories"
+full_description = "**Intertextuality:** References to and influences from other texts, which require knowledge of those texts to understand fully."
+
+[[layers.aspects]]
+id = "intertextual:literary"
+name = "Literary"
+layman_name = "Book Smart"
+description = "References to or influences from literature, including quotes, characters, plots, or themes from novels, poems, or plays."
+icon = "📖"
+
+[[layers.aspects]]
+id = "intertextual:historical"
+name = "Historical"
+layman_name = "Echoes of History"
+description = "References to or influences from historical documents, speeches, or writings that shape the text's meaning or structure."
+icon = "📜"
+
+[[layers.aspects]]
+id = "intertextual:biblical"
+name = "Biblical"
+layman_name = "Scripture Speak"
+description = "References to or influences from religious texts, particularly the Bible, including quotes, parables, figures, or theological concepts."
+icon = "✝️"
+
+[[layers.aspects]]
+id = "intertextual:artisanal"
+name = "Artisanal"
+layman_name = "Talk of the Trade"
+description = "References to or influences from specialized craft terminology, trade secrets, and professional jargon that shape how practitioners communicate about their work and expertise."
+icon = "🛠️"
+
+[[layers]]
+level = 8
+id = "ideological"
+name = "Philosophical and Ideological Stances"
+layman_name = "Taking Sides"
+full_description = "**Philosophical and Ideological Stances:** The underlying beliefs, worldviews, and ideologies that shape the perspective from which the text is written."
+
+[[layers.aspects]]
+id = "ideological:conservative"
+name = "Conservative"
+layman_name = "Old School Values"
+description = "A philosophical and ideological stance emphasizing traditional values, limited change, and preservation of established institutions. This represents a specific worldview that shapes the perspective of the text."
+icon = "⚓"
+
+[[layers.aspects]]
+id = "ideological:liberal"
+name = "Liberal"
+layman_name = "New Wave Thinking"
+description = "A philosophical and ideological stance emphasizing progressive values, social change, and the expansion of rights and freedoms. This represents a specific worldview that shapes the perspective of the text."
+icon = "🌊"
+
+[[layers.aspects]]
+id = "ideological:anarchism"
+name = "Anarchism"
+layman_name = "Break All Rules"
+description = "A philosophical and ideological stance emphasizing individualism, self-determination, and the abolition of all forms of authority and hierarchy. This represents a specific worldview that shapes the perspective of the text."
+icon = "⚔️"
+
+[[layers.aspects]]
+id = "ideological:humanism"
+name = "Humanism"
+layman_name = "People Matter Most"
+description = "A philosophical and ideological stance emphasizing human agency, rationality, and the value of individual experience without supernatural elements. This worldview centers human potential and ethics."
+icon = "👥"
+
+[[layers]]
+level = 9
+id = "relational"
+name = "Relational Context"
+layman_name = "Relationships Matter"
+full_description = "**Relational Context:** The relationships between the speaker and the audience."
+
+[[layers.aspects]]
+id = "relational:formal"
+name = "Formal"
+layman_name = "Keeping Distance"
+description = "A relationship context characterized by professional distance, respect for hierarchy, and adherence to social conventions in communication."
+icon = "🤵"
+
+[[layers.aspects]]
+id = "relational:intimate"
+name = "Intimate"
+layman_name = "Close and Personal"
+description = "A relationship context characterized by emotional closeness, personal disclosure, and shared history between communicators."
+icon = "❤️"
+
+[[layers.aspects]]
+id = "relational:instructional"
+name = "Instructional"
+layman_name = "Teacher Mode"
+description = "A relationship context characterized by knowledge transfer, where one party guides or teaches the other from a position of expertise."
+icon = "📚"
+
+[[layers.aspects]]
+id = "relational:adversarial"
+name = "Adversarial"
+layman_name = "Facing Off"
+description = "A relationship context characterized by opposition, disagreement, or competition between communicators with conflicting objectives."
+icon = "⚔️"
+
+[[layers]]
+level = 10
+id = "sociolinguistic"
+name = "Sociolinguistic Variations"
+layman_name = "Speaking Your Language"
+full_description = "**Sociolinguistic Variations:** Variations in language use influenced by social factors, including dialects, sociolects, and registers. This modality reflects the social identity and status of the speaker or writer."
+
+[[layers.aspects]]
+id = "sociolinguistic:academic"
+name = "Academic"
+layman_name = "Professor Speak"
+description = "A specific dialect and sociolect associated with urban, educated, and upper-class culture. It uses formal language, complex sentence structures, and specialized vocabulary."
+icon = "🎓"
+
+[[layers.aspects]]
+id = "sociolinguistic:mercantile"
+name = "Mercantile"
+layman_name = "Market Chatter"
+description = "A specific dialect and sociolect associated with urban, mercantile, and lower-class culture. It uses informal, pragmatic language, with puns and colloquialisms."
+icon = "💰"
+
+[[layers.aspects]]
+id = "sociolinguistic:redneck"
+name = "Redneck"
+layman_name = "Country Folk Talk"
+description = "A specific dialect and sociolect associated with rural, working-class Southern American culture. This variation reflects particular social identity markers through language use."
+icon = "🤠"
