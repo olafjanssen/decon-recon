@@ -31,13 +31,13 @@ fn extract_message_and_insight(
             .unwrap_or(clean_response)
             .to_string();
         let insight = json_value["insight"].as_str().map(|s| s.to_string());
-        (message, insight)
+        return (message, insight);
     } else {
         // If not valid JSON, use the whole response as message
-        (
+        return (
             clean_response.to_string(),
             fallback_insight.map(|s| s.to_string()),
-        )
+        );
     }
 }
 
@@ -111,6 +111,15 @@ enum Commands {
         /// Substant ID to start from
         substant_id: String,
         /// Chain length to generate (must start with core layer)
+        #[arg(short, long, default_value_t = 5)]
+        length: usize,
+    },
+
+    /// Generate complete campaign: all chains for all characters and substants
+    GenerateCampaign {
+        /// Campaign ID
+        campaign_id: String,
+        /// Chain length for each substant (default: 5)
         #[arg(short, long, default_value_t = 5)]
         length: usize,
     },
@@ -502,7 +511,155 @@ Characters:"
                 combinations.len()
             );
         }
-    }
 
+        Commands::GenerateCampaign {
+            campaign_id,
+            length,
+        } => {
+            if !campaign_exists(campaign_id, data_path) {
+                eprintln!("Campaign {} not found", campaign_id);
+                return Ok(());
+            }
+
+            let campaign_data = match load_campaign(campaign_id, data_path) {
+                Ok(data) => data,
+                Err(e) => {
+                    eprintln!("Error loading campaign: {}", e);
+                    return Ok(());
+                }
+            };
+
+            let generator = match UtteranceGenerator::new(provider) {
+                Ok(gen) => gen,
+                Err(e) => {
+                    eprintln!("Error creating generator: {}", e);
+                    return Ok(());
+                }
+            };
+
+            println!("Generating complete campaign dialogue network...");
+            println!("Characters: {}", campaign_data.characters.len());
+            println!("Substants: {}", campaign_data.substants.len());
+
+            let total_chains = campaign_data.characters.len() * campaign_data.substants.len();
+            println!("Total chains to generate: {}", total_chains);
+
+            let mut total_utterances = 0;
+            let mut reused_utterances = 0;
+
+            for character in &campaign_data.characters {
+                println!(
+                    "
+=== Processing character: {} ({}) ===",
+                    character.name, character.id
+                );
+
+                for substant in &campaign_data.substants {
+                    println!(
+                        "Processing substant: {} ({})...",
+                        substant.factoid, substant.id
+                    );
+
+                    // Get modalities with levels and generate chain
+                    let modalities_with_levels = campaign::get_modalities_with_levels(
+                        &campaign_data,
+                        &get_preferential_modalities(character),
+                    );
+
+                    let chain_length = if modalities_with_levels.len() < *length {
+                        modalities_with_levels.len()
+                    } else {
+                        *length
+                    };
+
+                    let mut current_message = substant.factoid.clone();
+                    let mut previous_utterance_id: Option<String> = None;
+
+                    for i in 0..chain_length {
+                        let aspect = &modalities_with_levels[i].aspect.id;
+
+                        match generator
+                            .generate_construction(
+                                &campaign_data,
+                                &character.id,
+                                aspect,
+                                &current_message,
+                            )
+                            .await
+                        {
+                            Ok(result) => {
+                                // Extract message and insight from JSON response
+                                let (message_text, insight_text) = extract_message_and_insight(
+                                    &result.message,
+                                    result.insight.as_deref(),
+                                );
+
+                                // Check if this utterance already exists
+                                if let Some(existing_utterance) = campaign::find_existing_utterance(
+                                    campaign_id,
+                                    data_path,
+                                    &character.id,
+                                    &substant.id,
+                                    &message_text,
+                                    i,
+                                ) {
+                                    println!(
+                                        "  Step {}: Reusing existing utterance {}",
+                                        i + 1,
+                                        existing_utterance.id
+                                    );
+                                    reused_utterances += 1;
+                                    previous_utterance_id = Some(existing_utterance.id.clone());
+                                    current_message = existing_utterance.utterance.clone();
+                                    continue;
+                                }
+
+                                // Create and save new utterance
+                                let utterance = campaign::create_utterance_with_insight(
+                                    &character.id,
+                                    &substant.id,
+                                    &message_text,
+                                    insight_text.as_deref(),
+                                    i,
+                                    previous_utterance_id.as_deref(),
+                                    Some(aspect),
+                                );
+
+                                if let Err(e) =
+                                    campaign::save_utterance(campaign_id, data_path, &utterance)
+                                {
+                                    eprintln!("Error saving utterance: {}", e);
+                                } else {
+                                    println!(
+                                        "  Step {}: Created new utterance {}",
+                                        i + 1,
+                                        utterance.id
+                                    );
+                                    total_utterances += 1;
+                                    previous_utterance_id = Some(utterance.id.clone());
+                                    current_message = message_text;
+                                }
+                            }
+                            Err(e) => {
+                                eprintln!("Error generating step {}: {}", i + 1, e);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            println!(
+                "
+=== Campaign Generation Complete ==="
+            );
+            println!("Total new utterances created: {}", total_utterances);
+            println!("Total utterances reused: {}", reused_utterances);
+            println!(
+                "Total utterances in network: {}",
+                total_utterances + reused_utterances
+            );
+        }
+    }
     Ok(())
 }
