@@ -9,7 +9,13 @@ use campaign::{campaign_exists, list_campaigns, load_campaign};
 use clap::{Parser, Subcommand};
 use generator::UtteranceGenerator;
 use llm::LlmProvider;
+use serde_json::{json, Value};
+use std::fs::File;
+use std::io::Write;
 use std::path::PathBuf;
+
+// For parsing utterances.toml
+use toml;
 
 fn extract_message_and_insight(
     response: &str,
@@ -122,6 +128,15 @@ enum Commands {
         /// Chain length for each substant (default: 5)
         #[arg(short, long, default_value_t = 5)]
         length: usize,
+    },
+
+    /// Export campaign data to JSON format for Godot
+    ExportForGodot {
+        /// Campaign ID
+        campaign_id: String,
+        /// Output JSON file path
+        #[arg(short, long, default_value = "campaign_data.json")]
+        output: String,
     },
 }
 
@@ -541,9 +556,6 @@ Characters:"
             println!("Characters: {}", campaign_data.characters.len());
             println!("Substants: {}", campaign_data.substants.len());
 
-            let total_chains = campaign_data.characters.len() * campaign_data.substants.len();
-            println!("Total chains to generate: {}", total_chains);
-
             let mut total_utterances = 0;
             let mut reused_utterances = 0;
 
@@ -554,95 +566,115 @@ Characters:"
                     character.name, character.id
                 );
 
+                // Get modalities with levels for this character
+                let modalities_with_levels = campaign::get_modalities_with_levels(
+                    &campaign_data,
+                    &get_preferential_modalities(character),
+                );
+
+                if modalities_with_levels.len() < *length {
+                    eprintln!(
+                        "Character {} only has {} modalities, cannot create chains of length {}",
+                        character.name,
+                        modalities_with_levels.len(),
+                        length
+                    );
+                    continue;
+                }
+
+                let combinations =
+                    campaign::generate_modality_combinations(&modalities_with_levels, *length);
+
                 for substant in &campaign_data.substants {
                     println!(
                         "Processing substant: {} ({})...",
                         substant.factoid, substant.id
                     );
-
-                    // Get modalities with levels and generate chain
-                    let modalities_with_levels = campaign::get_modalities_with_levels(
-                        &campaign_data,
-                        &get_preferential_modalities(character),
+                    println!(
+                        "Generating {} possible chains of length {}...",
+                        combinations.len(),
+                        length
                     );
 
-                    let chain_length = if modalities_with_levels.len() < *length {
-                        modalities_with_levels.len()
-                    } else {
-                        *length
-                    };
+                    for (chain_index, modality_chain) in combinations.iter().enumerate() {
+                        println!("\n=== Chain {} ===", chain_index + 1);
 
-                    let mut current_message = substant.factoid.clone();
-                    let mut previous_utterance_id: Option<String> = None;
+                        let mut current_message = substant.factoid.clone();
+                        let mut previous_utterance_id: Option<String> = None;
 
-                    for i in 0..chain_length {
-                        let aspect = &modalities_with_levels[i].aspect.id;
+                        for (step, modality_with_level) in modality_chain.iter().enumerate() {
+                            let aspect = &modality_with_level.aspect.id;
 
-                        match generator
-                            .generate_construction(
-                                &campaign_data,
-                                &character.id,
-                                aspect,
-                                &current_message,
-                            )
-                            .await
-                        {
-                            Ok(result) => {
-                                // Extract message and insight from JSON response
-                                let (message_text, insight_text) = extract_message_and_insight(
-                                    &result.message,
-                                    result.insight.as_deref(),
-                                );
-
-                                // Check if this utterance already exists
-                                if let Some(existing_utterance) = campaign::find_existing_utterance(
-                                    campaign_id,
-                                    data_path,
+                            match generator
+                                .generate_construction(
+                                    &campaign_data,
                                     &character.id,
-                                    &substant.id,
-                                    &message_text,
-                                    i,
-                                ) {
-                                    println!(
-                                        "  Step {}: Reusing existing utterance {}",
-                                        i + 1,
-                                        existing_utterance.id
+                                    aspect,
+                                    &current_message,
+                                )
+                                .await
+                            {
+                                Ok(result) => {
+                                    // Extract message and insight from JSON response
+                                    let (message_text, insight_text) = extract_message_and_insight(
+                                        &result.message,
+                                        result.insight.as_deref(),
                                     );
-                                    reused_utterances += 1;
-                                    previous_utterance_id = Some(existing_utterance.id.clone());
-                                    current_message = existing_utterance.utterance.clone();
-                                    continue;
-                                }
 
-                                // Create and save new utterance
-                                let utterance = campaign::create_utterance_with_insight(
-                                    &character.id,
-                                    &substant.id,
-                                    &message_text,
-                                    insight_text.as_deref(),
-                                    i,
-                                    previous_utterance_id.as_deref(),
-                                    Some(aspect),
-                                );
+                                    // Check if this utterance already exists
+                                    if let Some(existing_utterance) =
+                                        campaign::find_existing_utterance(
+                                            campaign_id,
+                                            data_path,
+                                            &character.id,
+                                            &substant.id,
+                                            &message_text,
+                                            step,
+                                        )
+                                    {
+                                        println!(
+                                            "  Step {}: Reusing existing utterance {}",
+                                            step + 1,
+                                            existing_utterance.id
+                                        );
+                                        reused_utterances += 1;
+                                        previous_utterance_id = Some(existing_utterance.id.clone());
+                                        current_message = existing_utterance.utterance.clone();
+                                        continue;
+                                    }
 
-                                if let Err(e) =
-                                    campaign::save_utterance(campaign_id, data_path, &utterance)
-                                {
-                                    eprintln!("Error saving utterance: {}", e);
-                                } else {
-                                    println!(
-                                        "  Step {}: Created new utterance {}",
-                                        i + 1,
-                                        utterance.id
+                                    // Create and save new utterance
+                                    let utterance = campaign::create_utterance_with_insight(
+                                        &character.id,
+                                        &substant.id,
+                                        &message_text,
+                                        insight_text.as_deref(),
+                                        step,
+                                        previous_utterance_id.as_deref(),
+                                        Some(aspect),
                                     );
-                                    total_utterances += 1;
-                                    previous_utterance_id = Some(utterance.id.clone());
-                                    current_message = message_text;
+
+                                    if let Err(e) =
+                                        campaign::save_utterance(campaign_id, data_path, &utterance)
+                                    {
+                                        eprintln!("Error saving utterance: {}", e);
+                                    } else {
+                                        println!(
+                                            "  Step {} (Level {} {}): {}",
+                                            step + 1,
+                                            modality_with_level.level,
+                                            aspect,
+                                            message_text
+                                        );
+                                        total_utterances += 1;
+                                        previous_utterance_id = Some(utterance.id.clone());
+                                        current_message = message_text;
+                                    }
                                 }
-                            }
-                            Err(e) => {
-                                eprintln!("Error generating step {}: {}", i + 1, e);
-                                break;
+                                Err(e) => {
+                                    eprintln!("Error generating step {}: {}", step + 1, e);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -658,6 +690,127 @@ Characters:"
             println!(
                 "Total utterances in network: {}",
                 total_utterances + reused_utterances
+            );
+        }
+
+        Commands::ExportForGodot {
+            campaign_id,
+            output,
+        } => {
+            if !campaign_exists(&campaign_id, data_path) {
+                eprintln!("Campaign {} not found", campaign_id);
+                return Ok(());
+            }
+
+            let campaign_data = match load_campaign(&campaign_id, data_path) {
+                Ok(data) => data,
+                Err(e) => {
+                    eprintln!("Error loading campaign: {}", e);
+                    return Ok(());
+                }
+            };
+
+            // Load utterances from the utterances.toml file
+            let utterances_path = format!("{}/{}/utterances.toml", data_path, campaign_id);
+            let utterances_data = match std::fs::read_to_string(&utterances_path) {
+                Ok(content) => content,
+                Err(e) => {
+                    eprintln!(
+                        "Warning: Could not read utterances file {}: {}",
+                        utterances_path, e
+                    );
+                    String::new()
+                }
+            };
+
+            // Parse utterances from TOML
+            let utterances: Vec<Value> = if utterances_data.is_empty() {
+                Vec::new()
+            } else {
+                match utterances_data.parse::<toml::Value>() {
+                    Ok(toml_value) => {
+                        if let Some(utterances_array) =
+                            toml_value.get("utterances").and_then(|v| v.as_array())
+                        {
+                            utterances_array.iter().map(|utt| {
+                                json!({
+                                    "id": utt.get("id").and_then(|v| v.as_str()).unwrap_or(""),
+                                    "character_id": utt.get("character_id").and_then(|v| v.as_str()).unwrap_or(""),
+                                    "substant_id": utt.get("substant_id").and_then(|v| v.as_str()).unwrap_or(""),
+                                    "utterance": utt.get("utterance").and_then(|v| v.as_str()).unwrap_or(""),
+                                    "insight": utt.get("insight").and_then(|v| v.as_str()),
+                                    "construction_depth": utt.get("construction_depth").and_then(|v| v.as_integer()).map(|n| n as u32),
+                                    "used_aspect": utt.get("used_aspect").and_then(|v| v.as_str()),
+                                    "constructed_from": utt.get("constructed_from").and_then(|v| v.as_str()),
+                                })
+                            }).collect()
+                        } else {
+                            Vec::new()
+                        }
+                    }
+                    Err(e) => {
+                        eprintln!("Warning: Could not parse utterances.toml: {}", e);
+                        Vec::new()
+                    }
+                }
+            };
+
+            // Convert campaign data to Godot-friendly JSON format
+            let json_data = json!({
+                "campaign": {
+                    "id": campaign_data.campaign.id,
+                    "title": campaign_data.campaign.title,
+                    "hub_location": campaign_data.campaign.hub_location,
+                    "description": campaign_data.campaign.description,
+                    "introduction": campaign_data.campaign.introduction,
+                    "resolution": campaign_data.campaign.resolution,
+                },
+                "characters": campaign_data.characters.iter().map(|char| json!({
+                    "id": char.id,
+                    "name": char.name,
+                    "location": char.location,
+                    "description": char.description,
+                    "preferential_modalities": char.preferential_modalities,
+                    "secret": char.secret,
+                })).collect::<Vec<Value>>(),
+                "substants": campaign_data.substants.iter().map(|sub| json!({
+                    "id": sub.id,
+                    "factoid": sub.factoid,
+                })).collect::<Vec<Value>>(),
+                "utterances": utterances,
+                "modalities": campaign_data.modalities.iter().map(|modality| json!({
+                    "level": modality.level,
+                    "id": modality.id,
+                    "name": modality.name,
+                    "layman_name": modality.layman_name,
+                    "full_description": modality.full_description,
+                    "aspects": modality.aspects.iter().map(|aspect| json!({
+                        "id": aspect.id,
+                        "name": aspect.name,
+                        "layman_name": aspect.layman_name,
+                        "description": aspect.description,
+                        "icon": aspect.icon,
+                    })).collect::<Vec<Value>>(),
+                })).collect::<Vec<Value>>(),
+            });
+
+            // Write JSON to file
+            let mut file = match File::create(&output) {
+                Ok(file) => file,
+                Err(e) => {
+                    eprintln!("Error creating output file {}: {}", output, e);
+                    return Ok(());
+                }
+            };
+
+            if let Err(e) = file.write_all(json_data.to_string().as_bytes()) {
+                eprintln!("Error writing to file {}: {}", output, e);
+                return Ok(());
+            }
+
+            println!(
+                "Successfully exported campaign '{}' to {}",
+                campaign_id, output
             );
         }
     }
