@@ -222,3 +222,26 @@ pub fn create_utterance_with_insight(
     }
 }
 
+
+
+pub fn find_existing_utterance(
+    campaign_id: &str,
+    data_path: &str,
+    character_id: &str,
+    substant_id: &str,
+    message: &str,
+    depth: usize,
+) -> Option<Utterance> {
+    let utterances = match load_utterances(campaign_id, data_path) {
+        Ok(uts) => uts,
+        Err(_) => return None,
+    };
+    
+    utterances.into_iter()
+        .find(|ut| {
+            ut.character_id == character_id &&
+            ut.substant_id == substant_id &&
+            ut.utterance == message &&
+            ut.construction_depth == depth
+        })
+}

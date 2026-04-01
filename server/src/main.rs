@@ -243,6 +243,21 @@ Characters:"
                         let (message_text, insight_text) =
                             extract_message_and_insight(&result.message, result.insight.as_deref());
 
+                        // Check if this utterance already exists
+                        if let Some(existing_utterance) = campaign::find_existing_utterance(
+                            campaign_id,
+                            data_path,
+                            character_id,
+                            substant_id,
+                            &message_text,
+                            i,
+                        ) {
+                            println!("Reusing existing utterance: {}", existing_utterance.id);
+                            previous_utterance_id = Some(existing_utterance.id.clone());
+                            current_message = existing_utterance.utterance.clone();
+                            continue; // Skip to next iteration
+                        }
+
                         // Create and save utterance
                         let utterance = campaign::create_utterance_with_insight(
                             character_id,
@@ -429,6 +444,21 @@ Characters:"
                                 &result.message,
                                 result.insight.as_deref(),
                             );
+
+                            // Check if this utterance already exists
+                            if let Some(existing_utterance) = campaign::find_existing_utterance(
+                                campaign_id,
+                                data_path,
+                                character_id,
+                                substant_id,
+                                &message_text,
+                                step,
+                            ) {
+                                println!("Reusing existing utterance: {}", existing_utterance.id);
+                                previous_utterance_id = Some(existing_utterance.id.clone());
+                                current_message = existing_utterance.utterance.clone();
+                                continue; // Skip to next iteration
+                            }
 
                             // Create and save utterance
                             let utterance = campaign::create_utterance_with_insight(
