@@ -25,14 +25,17 @@ theme_override_constants/separation = 20
 layout_mode = 2
 marker_symbol = "⚡"
 show_timer = true
+default_score = 130
 
 [node name="Keys" parent="TopBar" unique_id=1374950542 instance=ExtResource("1_u54uf")]
 layout_mode = 2
 marker_symbol = "🗝️"
+default_score = 22
 
 [node name="Flowers" parent="TopBar" unique_id=1603687650 instance=ExtResource("1_u54uf")]
 layout_mode = 2
 marker_symbol = "🪷"
+default_score = 1225
 
 [node name="BottomBar" type="HBoxContainer" parent="." unique_id=1956173939]
 layout_mode = 1
