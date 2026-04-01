@@ -11,8 +11,16 @@ config_version=5
 [application]
 
 config/name="decon-recon"
+run/main_scene="uid://dab1k0hy7dbah"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 
 [dotnet]
 

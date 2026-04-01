@@ -158,6 +158,7 @@ pub fn create_utterance(
     character_id: &str,
     substant_id: &str,
     utterance_text: &str,
+    depth: usize,
     constructed_from: Option<&str>,
     used_aspect: Option<&str>,
 ) -> Utterance {
@@ -167,9 +168,37 @@ pub fn create_utterance(
         substant_id: substant_id.to_string(),
         utterance: utterance_text.to_string(),
         insight: None,
+        construction_depth: depth,
         constructed_from: constructed_from.map(|s| s.to_string()),
         used_aspect: used_aspect.map(|s| s.to_string()),
     }
+}
+
+pub fn generate_modality_combinations(
+    modalities: &[crate::models::ModalityAspectWithLevel],
+    chain_length: usize,
+) -> Vec<Vec<&crate::models::ModalityAspectWithLevel>> {
+    use itertools::Itertools;
+
+    // Core layer must always be first (level 1)
+    let core_modality = modalities
+        .iter()
+        .find(|m| m.level == 1)
+        .expect("No core modality found");
+
+    // Remaining modalities (levels 2+)
+    let remaining_modalities: Vec<_> = modalities.iter().filter(|m| m.level > 1).collect();
+
+    // Generate all combinations of (chain_length-1) modalities from remaining
+    remaining_modalities
+        .iter()
+        .combinations(chain_length - 1)
+        .map(|combination| {
+            let mut chain = vec![core_modality];
+            chain.extend(combination);
+            chain
+        })
+        .collect()
 }
 
 pub fn create_utterance_with_insight(
@@ -177,6 +206,7 @@ pub fn create_utterance_with_insight(
     substant_id: &str,
     utterance_text: &str,
     insight: Option<&str>,
+    depth: usize,
     constructed_from: Option<&str>,
     used_aspect: Option<&str>,
 ) -> Utterance {
@@ -186,7 +216,9 @@ pub fn create_utterance_with_insight(
         substant_id: substant_id.to_string(),
         utterance: utterance_text.to_string(),
         insight: insight.map(|s| s.to_string()),
+        construction_depth: depth,
         constructed_from: constructed_from.map(|s| s.to_string()),
         used_aspect: used_aspect.map(|s| s.to_string()),
     }
 }
+

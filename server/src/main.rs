@@ -101,6 +101,19 @@ enum Commands {
         #[arg(short, long)]
         length: Option<usize>,
     },
+
+    /// Generate all possible chains of given length with gaps
+    AllChains {
+        /// Campaign ID
+        campaign_id: String,
+        /// Character ID to start with
+        character_id: String,
+        /// Substant ID to start from
+        substant_id: String,
+        /// Chain length to generate (must start with core layer)
+        #[arg(short, long, default_value_t = 5)]
+        length: usize,
+    },
 }
 
 #[tokio::main]
@@ -236,6 +249,7 @@ Characters:"
                             substant_id,
                             &message_text,
                             insight_text.as_deref(),
+                            i, // construction_depth
                             previous_utterance_id.as_deref(),
                             Some(aspect),
                         );
@@ -315,6 +329,148 @@ Characters:"
                 }
                 Err(e) => eprintln!("Error generating construction: {}", e),
             }
+        }
+        Commands::AllChains {
+            campaign_id,
+            character_id,
+            substant_id,
+            length,
+        } => {
+            if !campaign_exists(campaign_id, data_path) {
+                eprintln!("Campaign {} not found", campaign_id);
+                return Ok(());
+            }
+
+            let campaign_data = match load_campaign(campaign_id, data_path) {
+                Ok(data) => data,
+                Err(e) => {
+                    eprintln!("Error loading campaign: {}", e);
+                    return Ok(());
+                }
+            };
+
+            // Find the character
+            let character = campaign_data
+                .characters
+                .iter()
+                .find(|c| c.id == *character_id);
+
+            if character.is_none() {
+                eprintln!("Character {} not found in campaign", character_id);
+                return Ok(());
+            }
+
+            let character = character.unwrap();
+
+            // Check if substant exists
+            let substant = campaign_data
+                .substants
+                .iter()
+                .find(|s| s.id == *substant_id);
+
+            if substant.is_none() {
+                eprintln!("Substant {} not found in campaign", substant_id);
+                return Ok(());
+            }
+
+            let generator = match UtteranceGenerator::new(provider) {
+                Ok(gen) => gen,
+                Err(e) => {
+                    eprintln!("Error creating generator: {}", e);
+                    return Ok(());
+                }
+            };
+
+            // Get modalities with levels and generate all combinations
+            let modalities_with_levels = campaign::get_modalities_with_levels(
+                &campaign_data,
+                &get_preferential_modalities(character),
+            );
+
+            if modalities_with_levels.len() < *length {
+                eprintln!(
+                    "Character only has {} modalities, cannot create chains of length {}",
+                    modalities_with_levels.len(),
+                    length
+                );
+                return Ok(());
+            }
+
+            let combinations =
+                campaign::generate_modality_combinations(&modalities_with_levels, *length);
+
+            println!(
+                "Generating {} possible chains of length {}...",
+                combinations.len(),
+                length
+            );
+
+            for (chain_index, modality_chain) in combinations.iter().enumerate() {
+                println!("\n=== Chain {} ===", chain_index + 1);
+
+                let mut current_message = substant.unwrap().factoid.clone();
+                let mut previous_utterance_id: Option<String> = None;
+
+                for (step, modality_with_level) in modality_chain.iter().enumerate() {
+                    let aspect = &modality_with_level.aspect.id;
+
+                    match generator
+                        .generate_construction(
+                            &campaign_data,
+                            character_id,
+                            aspect,
+                            &current_message,
+                        )
+                        .await
+                    {
+                        Ok(result) => {
+                            // Extract message and insight from JSON response
+                            let (message_text, insight_text) = extract_message_and_insight(
+                                &result.message,
+                                result.insight.as_deref(),
+                            );
+
+                            // Create and save utterance
+                            let utterance = campaign::create_utterance_with_insight(
+                                character_id,
+                                substant_id,
+                                &message_text,
+                                insight_text.as_deref(),
+                                step, // construction_depth
+                                previous_utterance_id.as_deref(),
+                                Some(aspect),
+                            );
+
+                            if let Err(e) =
+                                campaign::save_utterance(campaign_id, data_path, &utterance)
+                            {
+                                eprintln!("Error saving utterance: {}", e);
+                            }
+
+                            println!(
+                                "Step {} (Level {} {}): {}",
+                                step + 1,
+                                modality_with_level.level,
+                                aspect,
+                                message_text
+                            );
+
+                            // Update for next iteration
+                            current_message = message_text;
+                            previous_utterance_id = Some(utterance.id.clone());
+                        }
+                        Err(e) => {
+                            eprintln!("Error generating step {}: {}", step + 1, e);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            println!(
+                "\nGenerated {} complete chains with all combinations!",
+                combinations.len()
+            );
         }
     }
 

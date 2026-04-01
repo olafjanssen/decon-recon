@@ -87,6 +87,7 @@ pub struct Utterance {
     pub substant_id: String,
     pub utterance: String,
     pub insight: Option<String>,
+    pub construction_depth: usize,
     pub constructed_from: Option<String>,
     pub used_aspect: Option<String>,
 }
