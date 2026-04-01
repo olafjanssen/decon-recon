@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://bwidx2gej7ty6"]
+
+[ext_resource type="FontFile" uid="uid://bhbo21j6ivonp" path="res://fonts/OpenMoji-black-glyf.ttf" id="1_uygic"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2fkqq"]
+bg_color = Color(0.8, 0.8, 0.8, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.7821718, 0.15250659, 0.78252363, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[node name="Card" type="Control" unique_id=175450745]
+custom_minimum_size = Vector2(250, 350)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=549605378]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2fkqq")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1392201591]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=417159499]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1126210423]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 32
+text = "Suggestion"
+horizontal_alignment = 1
+
+[node name="Layman" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1502287486]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+text = "Just a thought"
+horizontal_alignment = 1
+
+[node name="Symbol" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1466680606]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_uygic")
+theme_override_font_sizes/font_size = 72
+text = "💡"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1678110399]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+text = "A speech act used to propose an idea or course of action in a non-imposing manner."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
