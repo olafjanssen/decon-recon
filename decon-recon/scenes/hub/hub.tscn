@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dab1k0hy7dbah"]
+
+[ext_resource type="PackedScene" uid="uid://dxsybd7gjnmms" path="res://scenes/hub/hub_interface.tscn" id="1_qssp3"]
+
+[node name="Hub" type="Node2D" unique_id=1979146088]
+
+[node name="HubInterface" parent="." unique_id=35482838 instance=ExtResource("1_qssp3")]
+offset_right = 1920.0
+offset_bottom = 1080.0
