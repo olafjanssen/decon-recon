@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bwidx2gej7ty6"]
 
-[ext_resource type="FontFile" uid="uid://bhbo21j6ivonp" path="res://fonts/OpenMoji-black-glyf.ttf" id="1_uygic"]
+[ext_resource type="Script" uid="uid://dl1p8imfd2u5w" path="res://scenes/card_decon/aspect_card.gd" id="1_uygic"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2fkqq"]
 bg_color = Color(0.8, 0.8, 0.8, 1)
@@ -18,6 +18,7 @@ corner_radius_bottom_left = 25
 custom_minimum_size = Vector2(250, 350)
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("1_uygic")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=549605378]
 layout_mode = 1
@@ -53,7 +54,6 @@ horizontal_alignment = 1
 
 [node name="Symbol" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1466680606]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("1_uygic")
 theme_override_font_sizes/font_size = 72
 text = "💡"
 horizontal_alignment = 1
@@ -61,6 +61,7 @@ horizontal_alignment = 1
 [node name="Description" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1678110399]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 12
 text = "A speech act used to propose an idea or course of action in a non-imposing manner."
 horizontal_alignment = 1
 vertical_alignment = 1

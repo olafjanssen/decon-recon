@@ -10,14 +10,14 @@ func _ready():
 	load_all_campaigns()
 
 func load_all_campaigns():
-	var dir = DirAccess.open("res://decon-recon/campaigns")
+	var dir = DirAccess.open("res://campaigns")
 	if dir:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
 			if file_name.ends_with(".json"):
 				var campaign_id = file_name.replace(".json", "")
-				var path = "res://decon-recon/campaigns/" + file_name
+				var path = "res://campaigns/" + file_name
 				var file = FileAccess.open(path, FileAccess.READ)
 				if file:
 					var content = file.get_as_text()
