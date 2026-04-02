@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dxsybd7gjnmms"]
 
 [ext_resource type="PackedScene" uid="uid://t0ocfcgh8ph4" path="res://scenes/hub/hub_counter.tscn" id="1_u54uf"]
+[ext_resource type="FontFile" uid="uid://dg5u2su00i2tu" path="res://fonts/OpenMoji-black-glyf.woff2" id="2_b0dln"]
 [ext_resource type="StyleBox" uid="uid://dtdknr48a60wq" path="res://scenes/hub/play_button_style_box.tres" id="2_pshxu"]
 [ext_resource type="StyleBox" uid="uid://chb1axuv7gk6m" path="res://scenes/hub/play_button_style_box_hover.tres" id="3_hcja4"]
 [ext_resource type="StyleBox" uid="uid://cmadx3ytciqjl" path="res://scenes/hub/play_button_style_box_pressed.tres" id="3_pshxu"]
@@ -60,11 +61,12 @@ alignment = 2
 [node name="PlayButton" type="Button" parent="MarginContainer/BottomBar" unique_id=1853971691]
 custom_minimum_size = Vector2(132, 132)
 layout_mode = 2
-theme_override_font_sizes/font_size = 96
+theme_override_fonts/font = ExtResource("2_b0dln")
+theme_override_font_sizes/font_size = 70
 theme_override_styles/normal = ExtResource("2_pshxu")
 theme_override_styles/pressed = ExtResource("3_pshxu")
 theme_override_styles/hover = ExtResource("3_hcja4")
-text = "➤"
+text = "▶️"
 
 [node name="MarginContainer2" type="MarginContainer" parent="." unique_id=804986564]
 layout_mode = 1
@@ -85,17 +87,19 @@ layout_mode = 2
 [node name="CardsButton" type="Button" parent="MarginContainer2/BottomBarLeft" unique_id=3521822]
 custom_minimum_size = Vector2(132, 132)
 layout_mode = 2
-theme_override_font_sizes/font_size = 96
+theme_override_fonts/font = ExtResource("2_b0dln")
+theme_override_font_sizes/font_size = 70
 theme_override_styles/normal = ExtResource("2_pshxu")
 theme_override_styles/pressed = ExtResource("3_pshxu")
 theme_override_styles/hover = ExtResource("3_hcja4")
-text = "🀫"
+text = "📚"
 
 [node name="CharactersButton" type="Button" parent="MarginContainer2/BottomBarLeft" unique_id=109454045]
 custom_minimum_size = Vector2(132, 132)
 layout_mode = 2
-theme_override_font_sizes/font_size = 96
+theme_override_fonts/font = ExtResource("2_b0dln")
+theme_override_font_sizes/font_size = 70
 theme_override_styles/normal = ExtResource("2_pshxu")
 theme_override_styles/pressed = ExtResource("3_pshxu")
 theme_override_styles/hover = ExtResource("3_hcja4")
-text = "⛄︎"
+text = "👤"

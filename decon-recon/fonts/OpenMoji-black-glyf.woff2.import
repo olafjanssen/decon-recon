@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bhbo21j6ivonp"
-path="res://.godot/imported/OpenMoji-black-glyf.ttf-28af4616491f25734fbd62029e638bf5.fontdata"
+uid="uid://dg5u2su00i2tu"
+path="res://.godot/imported/OpenMoji-black-glyf.woff2-18c3040da2c7942a6a47abb7fb2910b8.fontdata"
 
 [deps]
 
-source_file="res://fonts/OpenMoji-black-glyf.ttf"
-dest_files=["res://.godot/imported/OpenMoji-black-glyf.ttf-28af4616491f25734fbd62029e638bf5.fontdata"]
+source_file="res://fonts/OpenMoji-black-glyf.woff2"
+dest_files=["res://.godot/imported/OpenMoji-black-glyf.woff2-18c3040da2c7942a6a47abb7fb2910b8.fontdata"]
 
 [params]
 
@@ -19,7 +19,7 @@ disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48
-allow_system_fallback=true
+allow_system_fallback=false
 force_autohinter=false
 modulate_color_glyphs=false
 hinting=1
@@ -30,7 +30,13 @@ Fallbacks=null
 fallbacks=[]
 Compress=null
 compress=true
-preload=[]
+preload=[{
+"chars": [],
+"glyphs": [],
+"name": "New Configuration",
+"size": Vector2i(16, 0),
+&"variation_embolden": 0.0
+}]
 language_support={}
 script_support={}
 opentype_features={}

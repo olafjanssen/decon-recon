@@ -26,6 +26,20 @@ window/stretch/aspect="expand"
 
 project/assembly_name="decon-recon"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/omnemoji/plugin.cfg")
+
+[internationalization]
+
+locale/locale_filter_mode=0
+locale/country_filter=["TL"]
+
+[omnemoji]
+
+emoji_provider=3
+custom_emoji_font="uid://dg5u2su00i2tu"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

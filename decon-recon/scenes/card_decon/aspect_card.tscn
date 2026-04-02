@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://bwidx2gej7ty6"]
 
 [ext_resource type="Script" uid="uid://dl1p8imfd2u5w" path="res://scenes/card_decon/aspect_card.gd" id="1_uygic"]
+[ext_resource type="FontFile" uid="uid://dg5u2su00i2tu" path="res://fonts/OpenMoji-black-glyf.woff2" id="2_ao6a3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2fkqq"]
-bg_color = Color(0.8, 0.8, 0.8, 1)
+bg_color = Color(0.8666667, 0.8666667, 0.8666667, 1)
 border_width_left = 10
 border_width_top = 10
 border_width_right = 10
@@ -14,10 +15,16 @@ corner_radius_top_right = 25
 corner_radius_bottom_right = 25
 corner_radius_bottom_left = 25
 
+[sub_resource type="LabelSettings" id="LabelSettings_ao6a3"]
+line_spacing = 0.0
+font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
 [node name="Card" type="Control" unique_id=175450745]
-custom_minimum_size = Vector2(250, 350)
+custom_minimum_size = Vector2(200, 300)
 layout_mode = 3
 anchors_preset = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_uygic")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=549605378]
@@ -38,27 +45,36 @@ theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=417159499]
 layout_mode = 2
+alignment = 1
 
 [node name="Name" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1126210423]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 24
 text = "Suggestion"
-horizontal_alignment = 1
-
-[node name="Layman" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1502287486]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
-text = "Just a thought"
 horizontal_alignment = 1
 
 [node name="Symbol" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1466680606]
 layout_mode = 2
-theme_override_font_sizes/font_size = 72
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_fonts/font = ExtResource("2_ao6a3")
+theme_override_font_sizes/font_size = 124
 text = "💡"
 horizontal_alignment = 1
 
+[node name="Layman" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1502287486]
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/font_size = 24
+text = "Just a thought and more of that"
+label_settings = SubResource("LabelSettings_ao6a3")
+horizontal_alignment = 1
+autowrap_mode = 3
+
 [node name="Description" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1678110399]
+visible = false
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 theme_override_font_sizes/font_size = 12

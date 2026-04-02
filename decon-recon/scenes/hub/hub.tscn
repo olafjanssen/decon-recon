@@ -1,9 +1,29 @@
 [gd_scene format=3 uid="uid://dab1k0hy7dbah"]
 
 [ext_resource type="PackedScene" uid="uid://dxsybd7gjnmms" path="res://scenes/hub/hub_interface.tscn" id="1_qssp3"]
+[ext_resource type="PackedScene" uid="uid://b8i05dlaftc4k" path="res://scenes/card_decon/card_decon.tscn" id="2_bocl7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_abcyb"]
+bg_color = Color(1, 1, 1, 1)
 
 [node name="Hub" type="Node2D" unique_id=1979146088]
+
+[node name="Panel" type="Panel" parent="." unique_id=1524489942]
+custom_minimum_size = Vector2(1920, 1080)
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_abcyb")
 
 [node name="HubInterface" parent="." unique_id=35482838 instance=ExtResource("1_qssp3")]
 offset_right = 1920.0
 offset_bottom = 1080.0
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1997870031]
+custom_minimum_size = Vector2(1920, 1080)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CardDecon" parent="CenterContainer" unique_id=358025691 instance=ExtResource("2_bocl7")]
+layout_mode = 2

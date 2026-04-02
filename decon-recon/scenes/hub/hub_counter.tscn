@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://t0ocfcgh8ph4"]
 
 [ext_resource type="Script" uid="uid://mnhbxsiuc7hu" path="res://scenes/hub/hub_counter.gd" id="1_kcwj0"]
+[ext_resource type="FontFile" uid="uid://dg5u2su00i2tu" path="res://fonts/OpenMoji-black-glyf.woff2" id="2_iiqce"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hcxm3"]
 border_width_left = 4
@@ -54,6 +55,7 @@ layout_mode = 2
 
 [node name="Marker" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" unique_id=1304357718]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_iiqce")
 text = "⚡"
 label_settings = SubResource("LabelSettings_o2d60")
 

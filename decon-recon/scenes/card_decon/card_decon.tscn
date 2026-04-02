@@ -8,8 +8,13 @@ content_margin_left = 20.0
 content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
+bg_color = Color(0.93333334, 0.93333334, 0.93333334, 1)
+border_width_top = 10
+border_width_bottom = 10
+border_color = Color(0.6, 0.6, 0.6, 1)
 
 [node name="CardDecon" type="Control" unique_id=358025691]
+custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,39 +32,60 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -600.0
-offset_top = -200.0
-offset_right = 600.0
-offset_bottom = 200.0
+offset_left = -960.0
+offset_top = -340.0
+offset_right = 960.0
+offset_bottom = 65.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Utterance" type="PanelContainer" parent="VBoxContainer" unique_id=1895250303]
-custom_minimum_size = Vector2(1200, 400)
+custom_minimum_size = Vector2(1920, 400)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_xk2p5")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Utterance" unique_id=438592969]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Utterance" unique_id=497272365]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 36
-text = "The land deal will displace half of the town's residents. I must formally advise you to exercise prudence, as the shadows of progress often engulf the homes of the many, thereby eroding the very foundations of our heritage and community. This phenomenon exemplifies the socio-economic consequences of unchecked urban development."
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/Utterance/MarginContainer" unique_id=438592969]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_font_sizes/normal_font_size = 42
+theme_override_font_sizes/bold_font_size = 42
+bbcode_enabled = true
+text = "The land deal will displace half of the town's residents. I must formally advise you to exercise prudence, as the shadows of progress often engulf the homes of the many, thereby eroding the very foundations of our heritage and community. This phenomenon exemplifies the socio-economic consequences of unchecked urban development. "
 fit_content = true
+scroll_active = false
+vertical_alignment = 1
 
-[node name="CardsContainer" type="PanelContainer" parent="VBoxContainer" unique_id=563273680]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CardsContainer" unique_id=1286024146]
-layout_mode = 2
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1286024146]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -395.0
+offset_top = -400.0
+offset_right = 305.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 0
 size_flags_horizontal = 4
 theme_override_constants/separation = 20
+alignment = 1
 
-[node name="Card" parent="VBoxContainer/CardsContainer/HBoxContainer" unique_id=175450745 instance=ExtResource("1_46xwt")]
+[node name="Card" parent="HBoxContainer" unique_id=175450745 instance=ExtResource("1_46xwt")]
 layout_mode = 2
 
-[node name="Card2" parent="VBoxContainer/CardsContainer/HBoxContainer" unique_id=2018890702 instance=ExtResource("1_46xwt")]
+[node name="Card2" parent="HBoxContainer" unique_id=2018890702 instance=ExtResource("1_46xwt")]
 layout_mode = 2
 
-[node name="Card3" parent="VBoxContainer/CardsContainer/HBoxContainer" unique_id=695299361 instance=ExtResource("1_46xwt")]
+[node name="Card3" parent="HBoxContainer" unique_id=695299361 instance=ExtResource("1_46xwt")]
 layout_mode = 2
