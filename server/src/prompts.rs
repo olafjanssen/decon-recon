@@ -19,11 +19,14 @@ Guidelines:
 - Add ONLY elements specific to the requested aspect's modality layer.
 - DO NOT modify aspects from other modality layers - preserve all elements from modalities other than the target modality.
 - Only add elements within the target modality layer (the layer that this aspect belongs to).
+- BE CONCISE and stay below 50 words
+- DO NOT USE markdown formatting.
 - Preserve all other semantic elements from all other modality layers.
 - Keep the message coherent and natural.
 - Maintain readability and flow.
 - Ensure the core meaning remains intact.
 - Be conservative - only add what is clearly part of the target modality layer, not elements from other layers.
+- Rewrite the message as much as possible, don't simply add a phrase at the end.
 
 Also provide snippet from the given profile or required addition to the profile to rewrite the message as short phrase such as:
 \"likes Elephants\", or \"has a Southern accent\".

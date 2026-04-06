@@ -8,8 +8,8 @@ pub struct UtteranceGenerator {
 }
 
 impl UtteranceGenerator {
-    pub fn new(provider: LlmProvider) -> Result<Self, AppError> {
-        let llm_service = LlmService::new(provider)?;
+    pub fn new(provider: LlmProvider, model: &str) -> Result<Self, AppError> {
+        let llm_service = LlmService::new(provider, model)?;
         Ok(Self { llm_service })
     }
 

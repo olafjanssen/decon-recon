@@ -13,10 +13,11 @@ pub struct LlmService {
     client: Client,
     endpoint: String,
     api_key: Option<String>,
+    model: String,
 }
 
 impl LlmService {
-    pub fn new(provider: LlmProvider) -> Result<Self, AppError> {
+    pub fn new(provider: LlmProvider, model: &str) -> Result<Self, AppError> {
         let client = Client::new();
 
         match provider {
@@ -34,6 +35,7 @@ impl LlmService {
                     client,
                     endpoint,
                     api_key,
+                    model: model.to_string(),
                 })
             }
             LlmProvider::Ollama => {
@@ -45,6 +47,7 @@ impl LlmService {
                     client,
                     endpoint,
                     api_key: None,
+                    model: model.to_string(),
                 })
             }
         }
@@ -56,6 +59,7 @@ impl LlmService {
             client: Client::new(),
             endpoint: "mock".to_string(),
             api_key: None,
+            model: "mock-model".to_string(),
         }
     }
 
@@ -106,7 +110,7 @@ impl LlmService {
 
     async fn generate_ollama(&self, prompt: &str) -> Result<String, AppError> {
         let request_body = serde_json::json!({
-            "model": "mistral-small3.2:latest",
+            "model": &self.model,
             "prompt": prompt,
             "stream": false,
         });

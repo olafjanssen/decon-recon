@@ -69,6 +69,10 @@ struct Cli {
     /// LLM provider to use (mistral or ollama)
     #[arg(long, default_value = "ollama")]
     provider: String,
+
+    /// Model to use for LLM provider (only applies to ollama)
+    #[arg(long, default_value = "mistral-small3.2:latest")]
+    model: String,
 }
 
 #[derive(Subcommand)]
@@ -231,7 +235,7 @@ Characters:"
                 return Ok(());
             }
 
-            let generator = match UtteranceGenerator::new(provider) {
+            let generator = match UtteranceGenerator::new(provider, &cli.model) {
                 Ok(gen) => gen,
                 Err(e) => {
                     eprintln!("Error creating generator: {}", e);
@@ -344,7 +348,7 @@ Characters:"
                 }
             };
 
-            let generator = match UtteranceGenerator::new(provider) {
+            let generator = match UtteranceGenerator::new(provider, &cli.model) {
                 Ok(gen) => gen,
                 Err(e) => {
                     eprintln!("Error creating generator: {}", e);
@@ -412,7 +416,7 @@ Characters:"
                 return Ok(());
             }
 
-            let generator = match UtteranceGenerator::new(provider) {
+            let generator = match UtteranceGenerator::new(provider, &cli.model) {
                 Ok(gen) => gen,
                 Err(e) => {
                     eprintln!("Error creating generator: {}", e);
@@ -544,7 +548,7 @@ Characters:"
                 }
             };
 
-            let generator = match UtteranceGenerator::new(provider) {
+            let generator = match UtteranceGenerator::new(provider, &cli.model) {
                 Ok(gen) => gen,
                 Err(e) => {
                     eprintln!("Error creating generator: {}", e);
