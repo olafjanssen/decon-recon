@@ -245,3 +245,27 @@ pub fn find_existing_utterance(
             ut.construction_depth == depth
         })
 }
+
+pub fn find_existing_node_by_params(
+    campaign_id: &str,
+    data_path: &str,
+    character_id: &str,
+    substant_id: &str,
+    depth: usize,
+    used_aspect: &str,
+    constructed_from: Option<&str>,
+) -> Option<Utterance> {
+    let utterances = match load_utterances(campaign_id, data_path) {
+        Ok(uts) => uts,
+        Err(_) => return None,
+    };
+    
+    utterances.into_iter()
+        .find(|ut| {
+            ut.character_id == character_id &&
+            ut.substant_id == substant_id &&
+            ut.construction_depth == depth &&
+            ut.used_aspect.as_deref() == Some(used_aspect) &&
+            ut.constructed_from.as_deref() == constructed_from
+        })
+}

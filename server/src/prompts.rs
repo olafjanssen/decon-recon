@@ -19,7 +19,7 @@ Guidelines:
 - Add ONLY elements specific to the requested aspect's modality layer.
 - DO NOT modify aspects from other modality layers - preserve all elements from modalities other than the target modality.
 - Only add elements within the target modality layer (the layer that this aspect belongs to).
-- BE CONCISE and stay below 50 words
+- BE CONCISE and stay below 100 words
 - DO NOT USE markdown formatting.
 - Preserve all other semantic elements from all other modality layers.
 - Keep the message coherent and natural.

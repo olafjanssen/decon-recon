@@ -262,6 +262,23 @@ Characters:"
                     .aspect
                     .id;
 
+                // Check if this node already exists based on parameters (before generation)
+                if let Some(existing_utterance) = campaign::find_existing_node_by_params(
+                    campaign_id,
+                    data_path,
+                    character_id,
+                    substant_id,
+                    i,
+                    aspect,
+                    previous_utterance_id.as_deref(),
+                ) {
+                    println!("Reusing existing utterance: {}", existing_utterance.id);
+                    previous_utterance_id = Some(existing_utterance.id.clone());
+                    current_message = existing_utterance.utterance.clone();
+                    continue; // Skip to next iteration
+                }
+
+                // Generate construction since node doesn't exist
                 match generator
                     .generate_construction(&campaign_data, character_id, aspect, &current_message)
                     .await
@@ -270,21 +287,6 @@ Characters:"
                         // Extract message and insight from JSON response
                         let (message_text, insight_text) =
                             extract_message_and_insight(&result.message, result.insight.as_deref());
-
-                        // Check if this utterance already exists
-                        if let Some(existing_utterance) = campaign::find_existing_utterance(
-                            campaign_id,
-                            data_path,
-                            character_id,
-                            substant_id,
-                            &message_text,
-                            i,
-                        ) {
-                            println!("Reusing existing utterance: {}", existing_utterance.id);
-                            previous_utterance_id = Some(existing_utterance.id.clone());
-                            current_message = existing_utterance.utterance.clone();
-                            continue; // Skip to next iteration
-                        }
 
                         // Create and save utterance
                         let utterance = campaign::create_utterance_with_insight(
@@ -457,6 +459,23 @@ Characters:"
                 for (step, modality_with_level) in modality_chain.iter().enumerate() {
                     let aspect = &modality_with_level.aspect.id;
 
+                    // Check if this node already exists based on parameters (before generation)
+                    if let Some(existing_utterance) = campaign::find_existing_node_by_params(
+                        campaign_id,
+                        data_path,
+                        character_id,
+                        substant_id,
+                        step,
+                        aspect,
+                        previous_utterance_id.as_deref(),
+                    ) {
+                        println!("Reusing existing utterance: {}", existing_utterance.id);
+                        previous_utterance_id = Some(existing_utterance.id.clone());
+                        current_message = existing_utterance.utterance.clone();
+                        continue; // Skip to next iteration
+                    }
+
+                    // Generate construction since node doesn't exist
                     match generator
                         .generate_construction(
                             &campaign_data,
@@ -472,21 +491,6 @@ Characters:"
                                 &result.message,
                                 result.insight.as_deref(),
                             );
-
-                            // Check if this utterance already exists
-                            if let Some(existing_utterance) = campaign::find_existing_utterance(
-                                campaign_id,
-                                data_path,
-                                character_id,
-                                substant_id,
-                                &message_text,
-                                step,
-                            ) {
-                                println!("Reusing existing utterance: {}", existing_utterance.id);
-                                previous_utterance_id = Some(existing_utterance.id.clone());
-                                current_message = existing_utterance.utterance.clone();
-                                continue; // Skip to next iteration
-                            }
 
                             // Create and save utterance
                             let utterance = campaign::create_utterance_with_insight(
@@ -609,77 +613,79 @@ Characters:"
                         for (step, modality_with_level) in modality_chain.iter().enumerate() {
                             let aspect = &modality_with_level.aspect.id;
 
-                            match generator
-                                .generate_construction(
-                                    &campaign_data,
-                                    &character.id,
-                                    aspect,
-                                    &current_message,
-                                )
-                                .await
+                    // Check if this node already exists based on parameters (before generation)
+                    if let Some(existing_utterance) =
+                        campaign::find_existing_node_by_params(
+                            campaign_id,
+                            data_path,
+                            &character.id,
+                            &substant.id,
+                            step,
+                            aspect,
+                            previous_utterance_id.as_deref(),
+                        )
+                    {
+                        println!(
+                            "  Step {}: Reusing existing utterance {}",
+                            step + 1,
+                            existing_utterance.id
+                        );
+                        reused_utterances += 1;
+                        previous_utterance_id = Some(existing_utterance.id.clone());
+                        current_message = existing_utterance.utterance.clone();
+                        continue;
+                    }
+
+                    // Generate construction since node doesn't exist
+                    match generator
+                        .generate_construction(
+                            &campaign_data,
+                            &character.id,
+                            aspect,
+                            &current_message,
+                        )
+                        .await
+                    {
+                        Ok(result) => {
+                            // Extract message and insight from JSON response
+                            let (message_text, insight_text) = extract_message_and_insight(
+                                &result.message,
+                                result.insight.as_deref(),
+                            );
+
+                            // Create and save new utterance
+                            let utterance = campaign::create_utterance_with_insight(
+                                &character.id,
+                                &substant.id,
+                                &message_text,
+                                insight_text.as_deref(),
+                                step,
+                                previous_utterance_id.as_deref(),
+                                Some(aspect),
+                            );
+
+                            if let Err(e) =
+                                campaign::save_utterance(campaign_id, data_path, &utterance)
                             {
-                                Ok(result) => {
-                                    // Extract message and insight from JSON response
-                                    let (message_text, insight_text) = extract_message_and_insight(
-                                        &result.message,
-                                        result.insight.as_deref(),
-                                    );
-
-                                    // Check if this utterance already exists
-                                    if let Some(existing_utterance) =
-                                        campaign::find_existing_utterance(
-                                            campaign_id,
-                                            data_path,
-                                            &character.id,
-                                            &substant.id,
-                                            &message_text,
-                                            step,
-                                        )
-                                    {
-                                        println!(
-                                            "  Step {}: Reusing existing utterance {}",
-                                            step + 1,
-                                            existing_utterance.id
-                                        );
-                                        reused_utterances += 1;
-                                        previous_utterance_id = Some(existing_utterance.id.clone());
-                                        current_message = existing_utterance.utterance.clone();
-                                        continue;
-                                    }
-
-                                    // Create and save new utterance
-                                    let utterance = campaign::create_utterance_with_insight(
-                                        &character.id,
-                                        &substant.id,
-                                        &message_text,
-                                        insight_text.as_deref(),
-                                        step,
-                                        previous_utterance_id.as_deref(),
-                                        Some(aspect),
-                                    );
-
-                                    if let Err(e) =
-                                        campaign::save_utterance(campaign_id, data_path, &utterance)
-                                    {
-                                        eprintln!("Error saving utterance: {}", e);
-                                    } else {
-                                        println!(
-                                            "  Step {} (Level {} {}): {}",
-                                            step + 1,
-                                            modality_with_level.level,
-                                            aspect,
-                                            message_text
-                                        );
-                                        total_utterances += 1;
-                                        previous_utterance_id = Some(utterance.id.clone());
-                                        current_message = message_text;
-                                    }
-                                }
-                                Err(e) => {
-                                    eprintln!("Error generating step {}: {}", step + 1, e);
-                                    break;
-                                }
+                                eprintln!("Error saving utterance: {}", e);
+                            } else {
+                                println!(
+                                    "  Step {} (Level {} {}): {}",
+                                    step + 1,
+                                    modality_with_level.level,
+                                    aspect,
+                                    message_text
+                                );
+                                total_utterances += 1;
+                                previous_utterance_id = Some(utterance.id.clone());
+                                current_message = message_text;
                             }
+                        }
+                        Err(e) => {
+                            eprintln!("Error generating step {}: {}", step + 1, e);
+                            break;
+                        }
+                    }
                         }
                     }
                 }
