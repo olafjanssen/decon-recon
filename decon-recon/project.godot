@@ -28,7 +28,7 @@ project/assembly_name="decon-recon"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/omnemoji/plugin.cfg")
+enabled=PackedStringArray()
 
 [internationalization]
 

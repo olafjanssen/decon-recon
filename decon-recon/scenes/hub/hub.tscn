@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dab1k0hy7dbah"]
 
 [ext_resource type="PackedScene" uid="uid://dxsybd7gjnmms" path="res://scenes/hub/hub_interface.tscn" id="1_qssp3"]
-[ext_resource type="PackedScene" uid="uid://b8i05dlaftc4k" path="res://scenes/card_decon/card_decon.tscn" id="2_bocl7"]
+[ext_resource type="PackedScene" uid="uid://6nkaguoklo0e" path="res://scenes/game_modes/modality_con/modality_con.tscn" id="3_koree"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_abcyb"]
 bg_color = Color(1, 1, 1, 1)
@@ -25,5 +25,5 @@ custom_minimum_size = Vector2(1920, 1080)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="CardDecon" parent="CenterContainer" unique_id=358025691 instance=ExtResource("2_bocl7")]
+[node name="ModalityCon" parent="CenterContainer" unique_id=695236498 instance=ExtResource("3_koree")]
 layout_mode = 2

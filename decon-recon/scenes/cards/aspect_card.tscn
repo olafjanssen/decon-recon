@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bwidx2gej7ty6"]
 
-[ext_resource type="Script" uid="uid://dl1p8imfd2u5w" path="res://scenes/card_decon/aspect_card.gd" id="1_uygic"]
+[ext_resource type="Script" uid="uid://dl1p8imfd2u5w" path="res://scenes/cards/aspect_card.gd" id="1_uygic"]
 [ext_resource type="FontFile" uid="uid://dg5u2su00i2tu" path="res://fonts/OpenMoji-black-glyf.woff2" id="2_ao6a3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2fkqq"]
@@ -23,8 +23,6 @@ font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 custom_minimum_size = Vector2(200, 300)
 layout_mode = 3
 anchors_preset = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
 script = ExtResource("1_uygic")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=549605378]

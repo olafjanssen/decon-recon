@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b8i05dlaftc4k"]
 
-[ext_resource type="Script" uid="uid://c53tovrbbwhry" path="res://scenes/card_decon/card_decon.gd" id="1_2fkqq"]
-[ext_resource type="PackedScene" uid="uid://bwidx2gej7ty6" path="res://scenes/card_decon/aspect_card.tscn" id="1_46xwt"]
+[ext_resource type="Script" uid="uid://c53tovrbbwhry" path="res://scenes/game_modes/card_decon/card_decon.gd" id="1_2fkqq"]
+[ext_resource type="PackedScene" uid="uid://bwidx2gej7ty6" path="res://scenes/cards/aspect_card.tscn" id="1_46xwt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xk2p5"]
 content_margin_left = 20.0

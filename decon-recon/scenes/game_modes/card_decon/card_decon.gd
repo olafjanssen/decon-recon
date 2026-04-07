@@ -3,7 +3,7 @@ extends Control
 var text_container: RichTextLabel
 var card_container: HBoxContainer
 
-var aspect_card = preload("res://scenes/card_decon/aspect_card.tscn")
+var aspect_card = preload("res://scenes/cards/aspect_card.tscn")
 
 func _ready() -> void:
 	print("Hello!")
