@@ -16,7 +16,15 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_alka5")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=597473200]
+[node name="GameMode" type="Control" parent="." unique_id=1644840159]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameMode" unique_id=597473200]
 custom_minimum_size = Vector2(1500, 800)
 layout_mode = 1
 anchors_preset = 6
@@ -24,29 +32,82 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -1200.0
+offset_left = -1500.0
 offset_top = -400.0
 offset_bottom = 400.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="DescriptionButton" parent="VBoxContainer" unique_id=1042036451 instance=ExtResource("2_gol64")]
+[node name="DescriptionButton" parent="GameMode/VBoxContainer" unique_id=1042036451 instance=ExtResource("2_gol64")]
 custom_minimum_size = Vector2(0, 0)
 layout_mode = 2
 size_flags_horizontal = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1286024146]
+[node name="HBoxContainer" type="HBoxContainer" parent="GameMode" unique_id=1286024146]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_top = -150.0
-offset_right = 420.0
+offset_right = 200.0
 offset_bottom = 150.0
 grow_vertical = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Card" parent="HBoxContainer" unique_id=175450745 instance=ExtResource("2_0btqa")]
+[node name="Card" parent="GameMode/HBoxContainer" unique_id=175450745 instance=ExtResource("2_0btqa")]
 layout_mode = 2
+
+[node name="GameStart" type="Control" parent="." unique_id=2036994061]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="GameStart" unique_id=1662249216]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Play"
+
+[node name="GameEnd" type="Control" parent="." unique_id=555923345]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="GameEnd" unique_id=232661903]
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="GameEnd/PanelContainer" unique_id=1139751847]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+text = "Play again"
