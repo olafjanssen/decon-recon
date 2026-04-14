@@ -104,6 +104,8 @@ func _on_description_clicked(selected_aspect):
 	
 
 func _on_play_pressed():
+	Signals.emit_signal("energy_spent", game_parameters.energy_cost)
+	
 	game_mode.visible = true
 	game_end.visible = false
 	game_start.visible = false

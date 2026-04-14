@@ -27,6 +27,8 @@ layout_mode = 2
 marker_symbol = "⚡"
 show_timer = true
 default_score = 130
+decrease_signal = "energy_spent"
+score_parameter = "energy"
 
 [node name="Keys" parent="TopBar" unique_id=1374950542 instance=ExtResource("1_u54uf")]
 layout_mode = 2
